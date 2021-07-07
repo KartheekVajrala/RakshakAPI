@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const fs = require('fs');
+const md5 = require('md5');
 var session = require('express-session');
 var uid = require('rand-token').uid;
 const app = express();
@@ -14,10 +15,9 @@ app.use(session({
     secret : 'secret-key',
     resave :false,
     saveUninitialized: true,
-
 }));
 
-mongoose.connect("mongodb://localhost:27017/RakshakDB",{useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect("mongodb+srv://admin-kartheek:rakshak@cluster0.tkugp.mongodb.net/RakshakDB",{useNewUrlParser: true, useUnifiedTopology: true});
 
 const userSchema = new mongoose.Schema({
   username: String,
@@ -37,7 +37,7 @@ app.post("/campus/main/register",function(req,res){
   user = new User({
     username: req.body.username,
     email: req.body.email,
-    password: req.body.password,
+    password: md5(req.body.password),
     role: req.body.role,
     token:uid(16)
   });
@@ -58,9 +58,8 @@ app.post("/campus/main/login",function(req,res){
       res.send({
         "message": "Not Found"
       });
-    }else if(foundUser.password === req.body.password){
+    }else if(foundUser.password === md5(req.body.password)){
       req.session.sessionId = foundUser.token;
-      console.log(req.session);
       res.send({
         "message":"sucessfully logged in",
          "token":foundUser.token,
@@ -94,6 +93,6 @@ app.get("/campus/simulation/policyplanner",function(req,res){
   }
 });
 
-app.listen(3000, function() {
+app.listen(process.env.PORT || 3000, function() {
   console.log("Server started on port 3000");
 });
