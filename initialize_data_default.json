@@ -1,0 +1,13 @@
+{
+  "Random":
+  {
+   "No_of_People_Affected":[10,20,30,40],
+   "Day_Resolution_by_Hours":[1,4,6,7]
+  },
+  "TimeSeries":
+  {
+   "No_of_Daily_Cases":[10,20,30,40],
+   "No_of_days_to_Simulate":[10,20,30,40]
+  },
+  "Spatial_Distribution":[10,20,30,40]
+ }
