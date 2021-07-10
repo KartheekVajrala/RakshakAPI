@@ -93,6 +93,16 @@ app.get("/campus/simulation/policyplanner",function(req,res){
   }
 });
 
+app.get("/campus/simulation/initialization",function(req,res){
+  if(!req.session.sessionId){
+    res.send("login first");
+  }else{
+    fs.readFile('initialize_data_default.json',function(err,data){
+      res.send(JSON.parse(data));
+    });
+  }
+});
+
 app.listen(process.env.PORT || 3000, function() {
   console.log("Server started on port 3000");
 });
