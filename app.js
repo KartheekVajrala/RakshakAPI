@@ -24,7 +24,8 @@ const userSchema = new mongoose.Schema({
   email: String,
   password: String,
   role: String,
-  token:String
+  token:String,
+  savedParams: Array
 });
 
 const User = mongoose.model("User",userSchema);
@@ -39,7 +40,8 @@ app.post("/campus/main/register",function(req,res){
     email: req.body.email,
     password: md5(req.body.password),
     role: req.body.role,
-    token:uid(16)
+    token:uid(16),
+    savedParams: []
   });
   user.save();
   res.send({"message":"Registered successfully"});
