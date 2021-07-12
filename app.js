@@ -24,7 +24,8 @@ const userSchema = new mongoose.Schema({
   email: String,
   password: String,
   role: String,
-  token:String
+  token:String,
+  savedParams: Array
 });
 
 const User = mongoose.model("User",userSchema);
@@ -39,7 +40,8 @@ app.post("/campus/main/register",function(req,res){
     email: req.body.email,
     password: req.body.password,
     role: req.body.role,
-    token:uid(16)
+    token: uid(16),
+    savedParams: []
   });
   user.save();
   res.send({"message":"Registered successfully"});
@@ -108,19 +110,26 @@ app.post("/campus/simulation/savesimulation", bodyParser.json() ,function(req,re
   if(!req.session.sessionId){
     res.send("login first");
   }else{
-    User.findOne({token: req.session.sessionId},function(err, foundUser){
+    User.findOne({token: req.session.sessionId},function(err,foundUser){
       if(err){
         res.send(err);
-      }else if(!foundUser){
-        res.send({
-          "message": "Not Found"
-        });
       }else{
-      
-      res.send({
-        "Message": "Saved Successfully",
-      });
+        if(foundUser){
+          if(foundUser.savedParams.length === 2){
+            res.send({"message":"limit reached"});
+          }else{
+            User.findOneAndUpdate({token: req.session.sessionId},{$push : {savedParams : req.body}},function(err,success){
+              if(err){
+                  res.send(err);
+                }else{
+                  res.send({"Message": "Saved Successfully"});
+                }
+            });
+          }
+        }
       }
+    });
+  }
 });
 
 app.listen(3000, function() {
