@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
 });
 
 const User = mongoose.model("User",userSchema);
-
+// 1st API
 app.get("/campus/main/campusname",function(req,res){
   res.send({"campusname":["madras","delhi"]});
 });
@@ -49,7 +49,7 @@ app.get("/campus/main/logout",function(req,res){
   req.session.destroy();
   res.send({"message":"Successfully logged out"});
 });
-
+//2nd API
 app.post("/campus/main/login",function(req,res){
   User.findOne({username: req.body.username},function(err, foundUser){
     if(err){
@@ -82,7 +82,7 @@ app.get("/campus/main/dashboard",function(req,res){
     });
   }
 });
-
+//3rd API
 app.get("/campus/simulation/policyplanner",function(req,res){
   if(!req.session.sessionId){
     res.send("login first");
@@ -92,13 +92,39 @@ app.get("/campus/simulation/policyplanner",function(req,res){
     });
   }
 });
-
+// 4th API
 app.get("/campus/simulation/initialization",function(req,res){
   if(!req.session.sessionId){
     res.send("login first");
   }else{
     fs.readFile('initialize_data_default.json',function(err,data){
       res.send(JSON.parse(data));
+    });
+  }
+});
+// 5th API
+app.post("/campus/simulation/savesimulation", bodyParser.json() ,function(req,res){
+  if(!req.session.sessionId){
+    res.send("login first");
+  }else{
+    User.findOne({token: req.session.sessionId},function(err,foundUser){
+      if(err){
+        res.send(err);
+      }else{
+        if(foundUser){
+          if(foundUser.savedParams.length === 10){
+            res.send({"message":"limit reached"});
+          }else{
+            User.findOneAndUpdate({token: req.session.sessionId},{$push : {savedParams : req.body}},function(err,success){
+              if(err){
+                  res.send(err);
+                }else{
+                  res.send({"Message": "Saved Successfully"});
+                }
+            });
+          }
+        }
+      }
     });
   }
 });
