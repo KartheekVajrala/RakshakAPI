@@ -7,10 +7,18 @@ const md5 = require('md5');
 var session = require('express-session');
 var uid = require('rand-token').uid;
 const app = express();
+const cors = require('cors')
+
+var corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200
+}
 
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+app.use(bodyParser.json());
+app.use(cors(corsOptions));
 app.use(session({
     secret : 'secret-key',
     resave :false,
