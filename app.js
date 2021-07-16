@@ -118,22 +118,55 @@ app.post("/campus/simulation/savesimulation", bodyParser.json() ,function(req,re
     res.send("login first");
   }else{
     User.findOne({token: req.session.sessionId},function(err,foundUser){
-      if(err){
-        res.send(err);
+      if(!err && foundUser){
+        if(foundUser.savedParams.length === 10){
+          res.send({"message":"Limit reached"});
+        }else{
+          foundUser.savedParams.push(req.body);
+          foundUser.save(error => {if(error){console.log(error);}});
+          res.send({"message":"Saved Successfully"});
+        }
       }else{
-        if(foundUser){
-          if(foundUser.savedParams.length === 10){
-            res.send({"message":"limit reached"});
-          }else{
-            User.findOneAndUpdate({token: req.session.sessionId},{$push : {savedParams : req.body}},function(err,success){
-              if(err){
-                  res.send(err);
-                }else{
-                  res.send({"Message": "Saved Successfully"});
-                }
-            });
+        res.send({"message":"User not found"});
+      }
+    });
+  }
+});
+// 6th API
+app.get('/campus/simulation/savedsimulations',function(req,res){
+  if(!req.session.sessionId){
+    res.send("login first");
+  }else{
+    User.findOne({token:req.session.sessionId},function(err,foundUser){
+      if(!err && foundUser){
+        let arr_Sim = []
+        for(let i = 0;i<foundUser.savedParams.length;i++){
+          arr_Sim.push({"SimulationName":foundUser.savedParams[i].Simulation_Name,"Created_Date_Time":foundUser.savedParams[i].Simulation1});
+        }
+        res.send({"message":arr_Sim});
+      }else{
+        res.send({"message":"user not found."});
+      }
+    });
+  }
+});
+// 7th API
+app.delete('/campus/simulation/savedsimulations/delete',function(req,res){
+  if(!req.session.sessionId){
+    console.log("login first");
+  }else{
+    User.findOne({token:req.session.sessionId},function(err,foundUser){
+      if(!err && foundUser){
+        for(let i=0;i<foundUser.savedParams.length;i++){
+          if(foundUser.savedParams[i].Simulation_Name === req.body.SimulationName){
+            foundUser.savedParams.splice(i,1);
+            break;
           }
         }
+        foundUser.save(error => {if(error){console.log(error);}});
+        res.send({"message":"Simulation deleted"});
+      }else{
+        res.send({"message":"user not found"});
       }
     });
   }
