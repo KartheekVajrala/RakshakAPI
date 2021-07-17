@@ -11,6 +11,7 @@ const cors = require('cors')
 
 var corsOptions = {
   origin: '*',
+  credentials: 'true',
   optionsSuccessStatus: 200
 }
 
