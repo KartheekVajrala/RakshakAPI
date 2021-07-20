@@ -10,7 +10,7 @@ const app = express();
 const cors = require('cors')
 
 var corsOptions = {
-  origin: '*',
+  origin: 'http://localhost:3000',
   credentials: 'true',
   optionsSuccessStatus: 200
 }
@@ -37,7 +37,15 @@ const userSchema = new mongoose.Schema({
   savedParams: Array
 });
 
+const campusSchema = new mongoose.Schema({
+  campusname : String,
+  buildings : Array,
+  classes : Array
+});
+
 const User = mongoose.model("User",userSchema);
+
+const Campus = mongoose.model("Campus",campusSchema);
 // 1st API
 app.get("/campus/main/campusname",function(req,res){
   res.send({"campusname":["madras","delhi"]});
@@ -62,6 +70,22 @@ app.get("/campus/main/logout",function(req,res){
 });
 //2nd API
 app.post("/campus/main/login",function(req,res){
+  Campus.findOne({campusname:req.body.campusname},function(err,foundCampus){
+    if(err){
+      console.log(err);
+    }else{
+      if(!foundCampus){
+        campus = new Campus({
+          campusname : req.body.campusname,
+          buildings : [],
+          classes : []
+        });
+        campus.save();
+      }else{
+        console.log("campus aldready exists");
+      }
+    }
+  });
   User.findOne({username: req.body.username},function(err, foundUser){
     if(err){
       res.send(err);
@@ -71,6 +95,7 @@ app.post("/campus/main/login",function(req,res){
       });
     }else if(foundUser.password === md5(req.body.password)){
       req.session.sessionId = foundUser.token;
+      req.session.campusname = req.body.campusname;
       res.send({
         "message":"sucessfully logged in",
          "token":foundUser.token,
@@ -168,6 +193,41 @@ app.delete('/campus/simulation/savedsimulations/delete',function(req,res){
         res.send({"message":"Simulation deleted"});
       }else{
         res.send({"message":"user not found"});
+      }
+    });
+  }
+});
+
+app.post('/campus/masterdata/campusbuildings/addbuilding',function(req, res){
+  if(!req.session.sessionId){
+    res.send("Login first");
+  }else{
+    Campus.findOne({campusname:req.session.campusname},function(err,foundCampus){
+      if(err || !foundCampus){
+        res.send("campus not found");
+      }else{
+        foundCampus.buildings.push(req.body);
+        foundCampus.save();
+        res.send({"message":"saved successfully"});
+      }
+    });
+  }
+});
+
+app.get('/campus/masterdata/campusbuildings/viewdata',function(req, res){
+  if(!req.session.sessionId){
+    res.send("login first");
+  }else{
+    Campus.findOne({req.session.campusname},function(err,foundCampus){
+      if(!err && foundCampus){
+        for(let i = 0;i<foundCampus.buildings.length;i++){
+          if(req.body.ID === foundCampus.buildings[i].BuildingId){
+            res.send(foundCampus.buildings[i]);
+            break;
+          }
+        }
+      }else{
+        res.send("Campus not found");
       }
     });
   }
