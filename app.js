@@ -106,6 +106,21 @@ app.get("/campus/simulation/initialization", function (req, res) {
 	}
 });
 
+app.get("/campus/campussimulator/visualpanel/peoplecount", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send({
+      "HealthyPeople":Math.floor(Math.random() * 500) + 1500,
+      "Asymptomatic":Math.floor(Math.random() * 20) + 5,
+      "Symptomatic":Math.floor(Math.random() * 10) + 3,
+      "Recovered":Math.floor(Math.random() * 30) + 7,
+      "Vaccinated":Math.floor(Math.random() * 100) + 20,
+      "Deceased":Math.floor(Math.random() * 5)
+     });
+  }
+});
+
 app.post("/campus/simulation/savesimulation", bodyParser.json() ,function(req,res){
   if(!req.session.sessionId){
     res.send("login first");
