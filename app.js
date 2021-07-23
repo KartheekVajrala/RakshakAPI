@@ -25,7 +25,8 @@ const userSchema = new mongoose.Schema({
   password: String,
   role: String,
   token:String,
-  savedParams: Array
+  savedParams: Array,
+  campusbuildings: Array
 });
 
 const User = mongoose.model("User",userSchema);
@@ -41,7 +42,8 @@ app.post("/campus/main/register",function(req,res){
     password: req.body.password,
     role: req.body.role,
     token: uid(16),
-    savedParams: []
+    savedParams: [],
+    campusbuildings: []
   });
   user.save();
   res.send({"message":"Registered successfully"});
@@ -146,7 +148,32 @@ app.post("/campus/simulation/savesimulation", bodyParser.json() ,function(req,re
     });
   }
 });
-
+//15th API
+app.post("/campus/masterdata/campusbuildings/addbuilding", bodyParser.json() ,function(req,res){
+  if(!req.session.sessionId){
+    res.send("login first");
+  }else{
+    User.findOne({token: req.session.sessionId},function(err,foundUser){
+      if(err){
+        res.send(err);
+      }else{
+        if(foundUser){
+          if(foundUser.campusbuildings.length === 10){
+            res.send({"message":"limit reached"});
+          }else{
+            User.findOneAndUpdate({token: req.session.sessionId},{$push : {campusbuildings : req.body}},function(err,success){
+              if(err){
+                  res.send(err);
+                }else{
+                  res.send({"Message": "Saved Successfully"});
+                }
+            });
+          }
+        }
+      }
+    });
+  }
+});
 app.listen(3000, function() {
   console.log("Server started on port 3000");
 });
