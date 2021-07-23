@@ -460,6 +460,301 @@ app.get("/campus/masterdata/classschedule/addclass/getCourseInstructor", functio
      ]);
   }
 });
+//25th API dummy
+app.post("/campus/masterdata/classSchedule/addclass/addStudentComposition", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send({"message":"Saved successfully"});
+  }
+});
+//26th API dummy
+app.patch("/campus/masterdata/classSchedule/addclass/editStudentComposition", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send({"message":"Updated"});
+  }
+});
+//27th API dummy
+app.delete('/campus/masterdata/classSchedule/addclass/deleteStudentComposition',function(req,res){
+  if(!req.session.sessionId){
+    console.log("login first");
+  }else{
+    // code to delete
+    res.send({'message':'Deleted Successfully'})
+  }
+});
+//28th API dummy
+app.get("/campus/masterdata/users", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send(
+      [
+       {
+        "ID":12345,
+        "USername":"Adway",
+        "Role":"CampusAdmin",
+        "Email":"sampleemail@gmail.com",
+        "Contact":9876543210,
+        "Status":"Enable or Disable"
+       },
+       {
+        "ID":12346,
+        "USername":"suma",
+        "Role":"CampusDirector",
+        "Email":"sampleemail@gmail.com",
+        "Contact":9876543210,
+        "Status":"Enable or Disable"
+       }
+      ]
+     );
+  }
+});
+//29th API dummy
+app.get("/campus/masterdata/users/viewdetails", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send({
+      "ID":12345,
+      "Fname":"Firstname",
+      "Lname":"Lastname",
+      "Username":"Adway",
+      "Role":"CampusAdmin",
+      "Email":"sampleemail@gmail.com",
+      "Contact":9876543210,
+      "DOB":"29-06-2021",
+      "Photo":"JPG/PNG"
+     }
+     );
+  }
+});
+//30th API dummy
+app.post("/campus/masterdata/users/adduser", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send({"Message":"Saved"});
+  }
+});
+//31st API dummy
+app.post("/campus/masterdata/surveyuploader", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send({"Message":"Uploaded"});
+  }
+});
+//32nd API dummy
+app.delete('/campus/masterdata/surveyuploader/delete',function(req,res){
+  if(!req.session.sessionId){
+    console.log("login first");
+  }else{
+    // code to delete
+    res.send({'message':'Deleted Successfully'})
+  }
+});
+//33rd API dummy
+app.patch("/campus/masterdata/surveyuploader/update", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send({"message":"Updated"});
+  }
+});
+//34th API dummy
+app.get("/campus/masterdata/surveyuploader/download", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send({"File":"Excelfile"});
+  }
+});
+//35th API dummy
+app.post("/campus/masterdata/campusmapuploader/add", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send({"Message":"Saved"});
+  }
+});
+//36th API dummy
+app.patch("/campus/masterdata/campusmapuploader/update", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send({"message":"Updated"});
+  }
+});
+//37th API dummy
+app.post("/campus/masterdata/studentdatauploader/add", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send({"Message":"Added"});
+  }
+});
+//38th API dummy
+app.delete('/campus/masterdata/studentdatauploader/delete',function(req,res){
+  if(!req.session.sessionId){
+    console.log("login first");
+  }else{
+    // code to delete
+    res.send({'message':'Deleted Successfully'})
+  }
+});
+//39th API dummy
+app.patch("/campus/masterdata/studentdatauploader/update", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send({"message":"Updated"});
+  }
+});
+//40th API dummy
+app.get("/campus/masterdata/batchwisestudentdetails", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send(
+      [
+       {
+        'BatchID':MA1234,
+        'BatchCode':'BM1234',
+        'Departments':'Cse',
+        "ProgramCode":'BE',
+        "YearOfStudy":"2nd Year",
+        "Strength":52,
+        'Status':'Enabled Or Disabled'
+       },
+       {
+        'BatchID':MA12374,
+        'BatchCode':'BM1234',
+        'Departments':'Cse',
+        "ProgramCode":'BE',
+        "YearOfStudy":"2nd Year",
+        "Strength":52,
+        'Status':'Enabled Or Disabled'
+       }
+      ]
+     );
+  }
+});
+//41st API dummy
+app.post("/campus/masterdata/batchwisestudentdetails/add", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send({"Message":"Added"});
+  }
+});
+//42nd API dummy
+app.delete('/campus/masterdata/batchwisestudentdetails/delete',function(req,res){
+  if(!req.session.sessionId){
+    console.log("login first");
+  }else{
+    // code to delete
+    res.send({'message':'Deleted Successfully'})
+  }
+});
+//43rd API dummy
+app.get("/campus/masterdata/facultydetails", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send(
+      [
+       {
+        'ID':1234,
+        'Courses':[EEL7060,EEL7061],
+        'Departments':'CSE',
+        "ResidenceBuildingName":'Type_B_Block1',
+        "AdultFamilyMembers":5,
+        "NoofChildren":3
+       },
+       {
+        'ID':1224,
+        'Courses':[EEL7040,EEL7051],
+        'Departments':'MECH',
+        "ResidenceBuildingName":'Type_A_Block1',
+        "AdultFamilyMembers":4,
+        "NoofChildren":2
+       }
+      ]
+     );
+  }
+});
+//44th API dummy
+app.post("/campus/masterdata/facultydetails/add", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send({"Message":"Saved"});
+  }
+});
+//45th API dummy
+app.get("/campus/masterdata/facultydetails/add/residencebuildname", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send({'ResidenceBuildingName':['Type_A_Block1','Type_A_Block2']});
+  }
+});
+//46th API dummy
+app.delete('/campus/masterdata/facultydetails/delete',function(req,res){
+  if(!req.session.sessionId){
+    console.log("login first");
+  }else{
+    // code to delete
+    res.send({'message':'Deleted Successfully'})
+  }
+});
+//47th API dummy
+app.get("/campus/masterdata/staffdetails", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send(
+        [
+         {
+          'ID':1234,
+          'StaffCategory ':1,
+          'WorkplaceBuildingName':'AdminBuildingEast',
+          "ResidenceBuildingName":'Type_B_Block1',
+          "AdultFamilyMembers":5,
+          "NoofChildren":3
+         },
+         {
+          'ID':1234,
+          'StaffCategory ':1,
+          'WorkplaceBuildingName':'AdminBuildingWest',
+          "ResidenceBuildingName":'Type_A_Block1',
+          "AdultFamilyMembers":4,
+          "NoofChildren":2
+         }
+        ]
+     );
+  }
+});
+//48th API dummy
+app.post("/campus/masterdata/staffdetails/add", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send({"Message":"Saved"});
+  }
+});
+//49th API dummy
+app.delete('/campus/masterdata/staffdetails/delete',function(req,res){
+  if(!req.session.sessionId){
+    console.log("login first");
+  }else{
+    // code to delete
+    res.send({'message':'Deleted Successfully'})
+  }
+});
 app.listen(3000, function() {
   console.log("Server started on port 3000");
 });
