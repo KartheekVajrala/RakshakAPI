@@ -269,6 +269,7 @@ app.post("/campus/masterdata/campusbuildings/upload", bodyParser.json() ,functio
   if(!req.session.sessionId){
     res.send("login first");
   }else{
+    //code to store the input
     res.send({'message':'uploaded successfully'});
   }
 });
@@ -381,7 +382,84 @@ app.get("/campus/masterdata/classschedule/viewdetails", function (req, res) {
      );
   }
 });
-
+//19th API dummy
+app.delete('/campus/masterdata/classschedule/deleteclass',function(req,res){
+  if(!req.session.sessionId){
+    console.log("login first");
+  }else{
+    // code to delete
+    res.send({'message':'Deleted Successfully'})
+  }
+});
+//20th API dummy
+app.post("/campus/masterdata/classschedule/addclass", bodyParser.json() ,function(req,res){
+  if(!req.session.sessionId){
+    res.send("login first");
+  }else{
+    //code to store the input
+    res.send({"Message":"Saved Successfully"});
+  }
+});
+//21st API dummy
+app.get("/campus/masterdata/classschedule/addclass/getbuildingname", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send([
+      {
+       "BuildingName":"Building1"
+      },
+      {
+       "BuildingName":"Building2"
+      }
+     ]);
+  }
+});
+//22nd API dummy
+app.get("/campus/masterdata/classschedule/addclass/getroomid", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send([
+      {
+       "RoomID":1234
+      },
+      {
+       "RoomID":1234
+      }
+     ]);
+  }
+});
+//23rd API dummy
+app.get("/campus/masterdata/classschedule/addclass/getStudentStrength", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send([
+      {
+       "studentstrength":50
+      },
+      {
+       "studentstrength":70
+      }
+     ]);
+  }
+});
+//24th API dummy
+app.get("/campus/masterdata/classschedule/addclass/getCourseInstructor", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send([
+      {
+       "CourseInstructor":"Name"
+      },
+      {
+       "CourseInstructor":"Name"
+      }
+     ]);
+  }
+});
 app.listen(3000, function() {
   console.log("Server started on port 3000");
 });
