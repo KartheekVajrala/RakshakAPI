@@ -182,6 +182,96 @@ app.post("/campus/simulation/savesimulation", bodyParser.json() ,function(req,re
     });
   }
 });
+//12th API dummy
+app.get("/campus/masterdata/campusbuildings", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send(
+      [
+       {
+        'ID':1234,
+        'BuildingName':'Central Instrumentation Building',
+        'BuildingType':'Acadamic',
+        'NoOfFloors':3,
+        'NoOfWorkers':75,
+        'Status':'Enabled Or Disabled'
+       },
+       {
+        'ID':1234,
+        'BuildingName':'Central Instrumentation Building',
+        'BuildingType':'Adminstration',
+        'NoOfFloors':3,
+        'NoOfWorkers':75,
+        'Status':'Enabled Or Disabled'
+       }
+      ]
+     );
+  }
+});
+//13th API dummy
+app.get("/campus/masterdata/campusbuildings/viewdata", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send({
+      "BuildingId":13,
+      "BuildingName":"admin-east",
+      "BuildingType":["Academic","Administartion"],
+      "NoOfFloors":2,
+      "ActiveHours":["10.00am","6.30pm"],
+      "NumberOfWorkers":35,
+      "NumberOfRoomsineachfloor":3,
+      "co-ordinates":[[73.113726,26.47113],[73.11408900000001,26.47113],[73.114096,26.471033], [73.11405999999999,26.471033]],
+      "RoomDetails":
+      [
+       {
+        "FloorNo":1,
+        "NumberofRooms":2,
+        "Rooms":
+         [
+          {
+           "RoomName":"Room1",
+           "Capacity":20,
+           "RoomType":""
+          },
+          {
+           "RoomName":"Room2",
+           "Capacity":20,
+           "RoomType":""
+          }
+         ]
+       },
+       {
+        "FloorNo":2,
+        "NumberofRooms":2,
+        "Rooms":
+         [
+          {
+           "RoomName":"Room3",
+           "Capacity":20,
+           "RoomType":""
+          },
+          {
+           "RoomName":"Room4",
+           "Capacity":20,
+           "RoomType":""
+          }
+         ]
+       }
+      ]
+     
+     });
+  }
+});
+//14th API dummy
+app.post("/campus/masterdata/campusbuildings/upload", bodyParser.json() ,function(req,res){
+  if(!req.session.sessionId){
+    res.send("login first");
+  }else{
+    res.send({'message':'uploaded successfully'});
+  }
+});
 //15th API
 app.post("/campus/masterdata/campusbuildings/addbuilding", bodyParser.json() ,function(req,res){
   if(!req.session.sessionId){
@@ -225,6 +315,73 @@ app.delete('/campus/masterdata/campusbuildings/deletebuilding',function(req,res)
     });
   }
 });
+//17th API dummy
+app.get("/campus/masterdata/classschedule", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send(
+        [
+         {
+          'CourseID':'MA1234',
+          'CourseName':'Maths',
+          'RoomID':'Acadamic',
+          'Strength':73,
+          'Departments':['Mech','Cse','IT'],
+          'Status':'Enabled Or Disabled'
+         },
+         {
+          'CourseID':'MA1234',
+          'CourseName':'Physics',
+          'RoomID':'Acadamic',
+          'Strength':54,
+          'Departments':['Mech','Cse','IT'],
+          'Status':'Enabled Or Disabled'
+         }
+        ]
+     );
+  }
+});
+//18th API dummy
+app.get("/campus/masterdata/classschedule/viewdetails", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send(
+      {
+        "CourseID":"MA1234",
+        "CourseName":'Maths',
+        "Strength":45,
+        "Departments":["Mech","Cse","IT"],
+        "ClassDays":
+         [
+          {
+           "Day":'Monday',
+           "Timing":['9.00am' , '12.00pm']
+          },
+          {
+           "Day":'Friday',
+           "Timing":['9.00am' , '12.00pm']
+          }
+         ],
+        "StudentStrength":50,
+        "CourseInstructor":"Staff",
+        "StudentComposition":
+        [
+         {
+          "BatchCode":"2021",
+          "Count":50
+         },
+         {
+          "BatchCode":"2021",
+          "Count":50
+         }
+        ]
+       }
+     );
+  }
+});
+
 app.listen(3000, function() {
   console.log("Server started on port 3000");
 });
