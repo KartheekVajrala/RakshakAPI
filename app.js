@@ -348,11 +348,23 @@ app.delete('/campus/masterdata/classschedule/deleteclass',function(req,res){
   if(!req.session.sessionId){
     console.log("login first");
   }else{
-    // code to delete
-    res.send({'message':'Deleted Successfully'})
+    Campus.findOne({campusname:req.session.campusname},function(err,foundCampus){
+      if(!err && foundCampus){
+        for(let i=0;i<foundCampus.classes.length;i++){
+          if(foundCampus.classes[i].CourseID === req.body.CourseID){
+            foundCampus.classes.splice(i,1);
+            break;
+          }
+        }
+        foundCampus.save(error => {if(error){console.log(error);}});
+        res.send({"message":"Class deleted successfully"});
+      }else{
+        res.send({"message":"Campus not found"});
+      }
+    });
   }
 });
-//20th API dummy
+//20th API
 app.post("/campus/masterdata/classschedule/addclass", bodyParser.json() ,function(req,res){
   if(!req.session.sessionId){
     res.send("login first");
