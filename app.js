@@ -500,7 +500,7 @@ app.get("/campus/masterdata/users", function (req, res) {
     });
   }
 });
-//29th API dummy
+//29th API
 app.get("/campus/masterdata/users/viewdetails", function (req, res) {
 	if (!req.session.sessionId) {
 		res.send("login first");
@@ -512,13 +512,19 @@ app.get("/campus/masterdata/users/viewdetails", function (req, res) {
       else{
         let arr = []
         for(let i = 0;i<docs.length;i++){
-          arr.push({"username":docs[i].username,
-          "role":docs[i].role,
-          "email":docs[i].email,
-          "Status":"Enabled Or Disabled"
-          });
+          if(docs[i].ID === req.body.ID){
+            res.send({"ID":docs[i].ID,
+            "Fname":docs[i].Fname,
+            "Lname":docs[i].Lname,
+            "username":docs[i].username,
+            "role":docs[i].role,
+            "email":docs[i].email,
+            "ContactNo":docs[i].ContactNo,
+            "DOB":docs[i].DOB
+            })
+            break;
+          }
         }
-        res.send({"message":arr});
       }
     });
   }
