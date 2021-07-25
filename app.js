@@ -277,73 +277,50 @@ app.delete('/campus/masterdata/campusbuildings/deletebuilding',function(req,res)
     });
   }
 });
-//17th API dummy
+//17th API
 app.get("/campus/masterdata/classschedule", function (req, res) {
 	if (!req.session.sessionId) {
 		res.send("login first");
 	} else {
-    res.send(
-        [
-         {
-          'CourseID':'MA1234',
-          'CourseName':'Maths',
-          'RoomID':'Acadamic',
-          'Strength':73,
-          'Departments':['Mech','Cse','IT'],
-          'Status':'Enabled Or Disabled'
-         },
-         {
-          'CourseID':'MA1234',
-          'CourseName':'Physics',
-          'RoomID':'Acadamic',
-          'Strength':54,
-          'Departments':['Mech','Cse','IT'],
-          'Status':'Enabled Or Disabled'
-         }
-        ]
-     );
+    Campus.findOne({campusname:req.session.campusname},function(err,foundCampus){
+      if(!err && foundCampus){
+        let arr_class = []
+        for(let i = 0;i<foundCampus.classes.length;i++){
+          arr_class.push({"CourseID":foundCampus.classes[i].CourseID,
+          "BuildingName":foundCampus.classes[i].BuildingName,
+          "RoomID":foundCampus.classes[i].RoomID,
+          "Strength":foundCampus.classes[i].Strength,
+          "Departments":foundCampus.classes[i].Departments,
+          "Status":"Enabled Or Disabled"}
+          );
+        }
+        res.send({"message":arr_class});
+      }else{
+        res.send({"message":"campus not found."});
+      }
+    });
   }
 });
-//18th API dummy
+//18th API 
 app.get("/campus/masterdata/classschedule/viewdetails", function (req, res) {
 	if (!req.session.sessionId) {
 		res.send("login first");
 	} else {
-    res.send(
-      {
-        "CourseID":"MA1234",
-        "CourseName":'Maths',
-        "Strength":45,
-        "Departments":["Mech","Cse","IT"],
-        "ClassDays":
-         [
-          {
-           "Day":'Monday',
-           "Timing":['9.00am' , '12.00pm']
-          },
-          {
-           "Day":'Friday',
-           "Timing":['9.00am' , '12.00pm']
+    Campus.findOne({campusname:req.session.campusname},function(err,foundCampus){
+      if(!err && foundCampus){
+        for(let i=0;i<foundCampus.classes.length;i++){
+          if(foundCampus.classes[i].CourseID === req.body.CourseID){
+            res.send(foundCampus.classes[i])
+            break;
           }
-         ],
-        "StudentStrength":50,
-        "CourseInstructor":"Staff",
-        "StudentComposition":
-        [
-         {
-          "BatchCode":"2021",
-          "Count":50
-         },
-         {
-          "BatchCode":"2021",
-          "Count":50
-         }
-        ]
-       }
-     );
+        }
+      }else{
+        res.send({"message":"Campus not found"});
+      }
+    });
   }
 });
-//19th API dummy
+//19th API
 app.delete('/campus/masterdata/classschedule/deleteclass',function(req,res){
   if(!req.session.sessionId){
     console.log("login first");
