@@ -29,12 +29,18 @@ app.use(session({
 mongoose.connect("mongodb://localhost:27017/RakshakDB",{useNewUrlParser: true, useUnifiedTopology: true});
 
 const userSchema = new mongoose.Schema({
+  ID: Number,
+  Fname: String,
+  Lname:String,
+  Gender: String,
   username: String,
   email: String,
   password: String,
   role: String,
+  ContactNo: String,
+  DOB: String,
   token:String,
-  savedParams: Array,
+  savedParams: Array
 });
 
 const campusSchema = new mongoose.Schema({
@@ -60,6 +66,12 @@ app.post("/campus/main/register",function(req,res){
     email: req.body.email,
     password: req.body.password,
     role: req.body.role,
+    ID: req.body.ID,
+    Fname: req.body.Fname,
+    Lname: req.body.Lname,
+    Gender: req.body.Gender,
+    ContactNo: req.body.ContactNo,
+    DOB: req.body.DOB,
     token: uid(16),
     savedParams: [],
   });
@@ -463,7 +475,7 @@ app.delete('/campus/masterdata/classSchedule/addclass/deleteStudentComposition',
     res.send({'message':'Deleted Successfully'})
   }
 });
-//28th API dummy
+//28th API 
 app.get("/campus/masterdata/users", function (req, res) {
 	if (!req.session.sessionId) {
 		res.send("login first");
@@ -491,18 +503,22 @@ app.get("/campus/masterdata/users/viewdetails", function (req, res) {
 	if (!req.session.sessionId) {
 		res.send("login first");
 	} else {
-    res.send({
-      "ID":12345,
-      "Fname":"Firstname",
-      "Lname":"Lastname",
-      "Username":"Adway",
-      "Role":"CampusAdmin",
-      "Email":"sampleemail@gmail.com",
-      "Contact":9876543210,
-      "DOB":"29-06-2021",
-      "Photo":"JPG/PNG"
-     }
-     );
+    User.find({}, function (err, docs) {
+      if (err){
+          console.log(err);
+      }
+      else{
+        let arr = []
+        for(let i = 0;i<docs.length;i++){
+          arr.push({"username":docs[i].username,
+          "role":docs[i].role,
+          "email":docs[i].email,
+          "Status":"Enabled Or Disabled"
+          });
+        }
+        res.send({"message":arr});
+      }
+    });
   }
 });
 //30th API dummy
