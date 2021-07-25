@@ -363,64 +363,76 @@ app.post("/campus/masterdata/classschedule/addclass", bodyParser.json() ,functio
     });
   }
 });
-//21st API dummy
+//21st API
 app.get("/campus/masterdata/classschedule/addclass/getbuildingname", function (req, res) {
 	if (!req.session.sessionId) {
 		res.send("login first");
 	} else {
-    res.send([
-      {
-       "BuildingName":"Building1"
-      },
-      {
-       "BuildingName":"Building2"
+    Campus.findOne({campusname:req.session.campusname},function(err,foundCampus){
+      if(!err && foundCampus){
+        let arr = []
+        for(let i = 0;i<foundCampus.classes.length;i++){
+          arr.push({"BuildingName":foundCampus.classes[i].BuildingName});
+        }
+        res.send({"message":arr});
+      }else{
+        res.send({"message":"campus not found."});
       }
-     ]);
+    });
   }
 });
-//22nd API dummy
+//22nd API
 app.get("/campus/masterdata/classschedule/addclass/getroomid", function (req, res) {
 	if (!req.session.sessionId) {
 		res.send("login first");
 	} else {
-    res.send([
-      {
-       "RoomID":1234
-      },
-      {
-       "RoomID":1234
+    Campus.findOne({campusname:req.session.campusname},function(err,foundCampus){
+      if(!err && foundCampus){
+        let arr = []
+        for(let i = 0;i<foundCampus.classes.length;i++){
+          arr.push({"RoomID":foundCampus.classes[i].RoomID});
+        }
+        res.send({"message":arr});
+      }else{
+        res.send({"message":"campus not found."});
       }
-     ]);
+    });
   }
 });
-//23rd API dummy
+//23rd API
 app.get("/campus/masterdata/classschedule/addclass/getStudentStrength", function (req, res) {
 	if (!req.session.sessionId) {
 		res.send("login first");
 	} else {
-    res.send([
-      {
-       "studentstrength":50
-      },
-      {
-       "studentstrength":70
+    Campus.findOne({campusname:req.session.campusname},function(err,foundCampus){
+      if(!err && foundCampus){
+        let arr = []
+        for(let i = 0;i<foundCampus.classes.length;i++){
+          arr.push({"StudentStrength":foundCampus.classes[i].StudentStrength});
+        }
+        res.send({"message":arr});
+      }else{
+        res.send({"message":"campus not found."});
       }
-     ]);
+    });
   }
 });
-//24th API dummy
+//24th API
 app.get("/campus/masterdata/classschedule/addclass/getCourseInstructor", function (req, res) {
 	if (!req.session.sessionId) {
 		res.send("login first");
 	} else {
-    res.send([
-      {
-       "CourseInstructor":"Name"
-      },
-      {
-       "CourseInstructor":"Name"
+    Campus.findOne({campusname:req.session.campusname},function(err,foundCampus){
+      if(!err && foundCampus){
+        let arr = []
+        for(let i = 0;i<foundCampus.classes.length;i++){
+          arr.push({"CourseInstructor":foundCampus.classes[i].CourseInstructor});
+        }
+        res.send({"message":arr});
+      }else{
+        res.send({"message":"campus not found."});
       }
-     ]);
+    });
   }
 });
 //25th API dummy
