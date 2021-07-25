@@ -694,56 +694,90 @@ app.delete('/campus/masterdata/batchwisestudentdetails/delete',function(req,res)
     });
   }
 });
-//43rd API dummy
+//43rd API 
 app.get("/campus/masterdata/facultydetails", function (req, res) {
 	if (!req.session.sessionId) {
 		res.send("login first");
 	} else {
-    res.send(
-      [
-       {
-        'ID':1234,
-        'Courses':[EEL7060,EEL7061],
-        'Departments':'CSE',
-        "ResidenceBuildingName":'Type_B_Block1',
-        "AdultFamilyMembers":5,
-        "NoofChildren":3
-       },
-       {
-        'ID':1224,
-        'Courses':[EEL7040,EEL7051],
-        'Departments':'MECH',
-        "ResidenceBuildingName":'Type_A_Block1',
-        "AdultFamilyMembers":4,
-        "NoofChildren":2
-       }
-      ]
-     );
+    Campus.findOne({campusname:req.session.campusname},function(err,foundCampus){
+      if(!err && foundCampus){
+        let arr_class = []
+        for(let i = 0;i<foundCampus.faculty_details.length;i++){
+          arr_class.push({"ID":foundCampus.faculty_details[i].ID,
+          "Courses":foundCampus.faculty_details[i].Courses,
+          "Departments":foundCampus.faculty_details[i].Departments,
+          "ResidenceBuildingName":foundCampus.faculty_details[i].ResidenceBuildingName,
+          "AdultFamilyMembers":foundCampus.faculty_details[i].AdultFamilyMembers,
+          "NoofChildren":foundCampus.faculty_details[i].NoofChildren,
+          "Status":"Enabled Or Disabled"}
+          );
+        }
+        res.send({"message":arr_class});
+      }else{
+        res.send({"message":"campus not found."});
+      }
+    });
   }
 });
-//44th API dummy
+//44th API
 app.post("/campus/masterdata/facultydetails/add", function (req, res) {
 	if (!req.session.sessionId) {
 		res.send("login first");
 	} else {
-    res.send({"Message":"Saved"});
+    Campus.findOne({campusname:req.session.campusname},function(err,foundCampus){
+      if(err){
+        res.send(err);
+      }else{
+        if(foundCampus){
+          if(foundCampus.faculty_details.length === 10){
+            res.send({"message":"limit reached"});
+          }else{
+            foundCampus.faculty_details.push(req.body);
+            foundCampus.save();
+            res.send({"Message":"Added"});
+          }
+        }
+      }
+    });
   }
 });
-//45th API dummy
+//45th API
 app.get("/campus/masterdata/facultydetails/add/residencebuildname", function (req, res) {
 	if (!req.session.sessionId) {
 		res.send("login first");
 	} else {
-    res.send({'ResidenceBuildingName':['Type_A_Block1','Type_A_Block2']});
+    Campus.findOne({campusname:req.session.campusname},function(err,foundCampus){
+      if(!err && foundCampus){
+        let arr_class = []
+        for(let i = 0;i<foundCampus.faculty_details.length;i++){
+          arr_class.push(foundCampus.faculty_details[i].ResidenceBuildingName);
+        }
+        res.send({"ResidenceBuildingName":arr_class});
+      }else{
+        res.send({"message":"campus not found."});
+      }
+    });
   }
 });
-//46th API dummy
+//46th API
 app.delete('/campus/masterdata/facultydetails/delete',function(req,res){
   if(!req.session.sessionId){
     console.log("login first");
   }else{
-    // code to delete
-    res.send({'message':'Deleted Successfully'})
+    Campus.findOne({campusname:req.session.campusname},function(err,foundCampus){
+      if(!err && foundCampus){
+        for(let i=0;i<foundCampus.faculty_details.length;i++){
+          if(foundCampus.faculty_details[i].ID === req.body.ID){
+            foundCampus.faculty_details.splice(i,1);
+            break;
+          }
+        }
+        foundCampus.save(error => {if(error){console.log(error);}});
+        res.send({"message":"Deleted Successfully"});
+      }else{
+        res.send({"message":"Campus not found"});
+      }
+    });
   }
 });
 //47th API dummy
