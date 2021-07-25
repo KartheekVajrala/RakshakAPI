@@ -534,6 +534,21 @@ app.post("/campus/masterdata/users/adduser", function (req, res) {
 	if (!req.session.sessionId) {
 		res.send("login first");
 	} else {
+    user = new User({
+      username: req.body.username,
+      email: req.body.email,
+      password: req.body.password,
+      role: req.body.role,
+      ID: req.body.ID,
+      Fname: req.body.Fname,
+      Lname: req.body.Lname,
+      Gender: req.body.Gender,
+      ContactNo: req.body.ContactNo,
+      DOB: req.body.DOB,
+      token: uid(16),
+      savedParams: [],
+    });
+    user.save();
     res.send({"Message":"Saved"});
   }
 });
