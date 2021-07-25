@@ -357,8 +357,21 @@ app.post("/campus/masterdata/classschedule/addclass", bodyParser.json() ,functio
   if(!req.session.sessionId){
     res.send("login first");
   }else{
-    //code to store the input
-    res.send({"Message":"Saved Successfully"});
+    Campus.findOne({campusname:req.session.campusname},function(err,foundCampus){
+      if(err){
+        res.send(err);
+      }else{
+        if(foundCampus){
+          if(foundCampus.classes.length === 10){
+            res.send({"message":"limit reached"});
+          }else{
+            foundCampus.classes.push(req.body);
+            foundCampus.save();
+            res.send({"message":"Saved Successfully"});
+          }
+        }
+      }
+    });
   }
 });
 //21st API dummy
