@@ -529,7 +529,7 @@ app.get("/campus/masterdata/users/viewdetails", function (req, res) {
     });
   }
 });
-//30th API dummy
+//30th API
 app.post("/campus/masterdata/users/adduser", function (req, res) {
 	if (!req.session.sessionId) {
 		res.send("login first");
@@ -626,50 +626,72 @@ app.patch("/campus/masterdata/studentdatauploader/update", function (req, res) {
     res.send({"message":"Updated"});
   }
 });
-//40th API dummy
+//40th API
 app.get("/campus/masterdata/batchwisestudentdetails", function (req, res) {
 	if (!req.session.sessionId) {
 		res.send("login first");
 	} else {
-    res.send(
-      [
-       {
-        'BatchID':MA1234,
-        'BatchCode':'BM1234',
-        'Departments':'Cse',
-        "ProgramCode":'BE',
-        "YearOfStudy":"2nd Year",
-        "Strength":52,
-        'Status':'Enabled Or Disabled'
-       },
-       {
-        'BatchID':MA12374,
-        'BatchCode':'BM1234',
-        'Departments':'Cse',
-        "ProgramCode":'BE',
-        "YearOfStudy":"2nd Year",
-        "Strength":52,
-        'Status':'Enabled Or Disabled'
-       }
-      ]
-     );
+    Campus.findOne({campusname:req.session.campusname},function(err,foundCampus){
+      if(!err && foundCampus){
+        let arr_class = []
+        for(let i = 0;i<foundCampus.student_details.length;i++){
+          arr_class.push({"BatchID":foundCampus.student_details[i].BatchID,
+          "BatchCode":foundCampus.student_details[i].BatchCode,
+          "Departments":foundCampus.student_details[i].Departments,
+          "ProgramCode":foundCampus.student_details[i].ProgramCode,
+          "YearOfStudy":foundCampus.student_details[i].YearOfStudy,
+          "Strength":foundCampus.student_details[i].Strength,
+          "Status":"Enabled Or Disabled"}
+          );
+        }
+        res.send({"message":arr_class});
+      }else{
+        res.send({"message":"campus not found."});
+      }
+    });
   }
 });
-//41st API dummy
+//41st API
 app.post("/campus/masterdata/batchwisestudentdetails/add", function (req, res) {
 	if (!req.session.sessionId) {
 		res.send("login first");
 	} else {
-    res.send({"Message":"Added"});
+    Campus.findOne({campusname:req.session.campusname},function(err,foundCampus){
+      if(err){
+        res.send(err);
+      }else{
+        if(foundCampus){
+          if(foundCampus.student_details.length === 10){
+            res.send({"message":"limit reached"});
+          }else{
+            foundCampus.student_details.push(req.body);
+            foundCampus.save();
+            res.send({"Message":"Added"});
+          }
+        }
+      }
+    });
   }
 });
-//42nd API dummy
+//42nd API
 app.delete('/campus/masterdata/batchwisestudentdetails/delete',function(req,res){
   if(!req.session.sessionId){
     console.log("login first");
   }else{
-    // code to delete
-    res.send({'message':'Deleted Successfully'})
+    Campus.findOne({campusname:req.session.campusname},function(err,foundCampus){
+      if(!err && foundCampus){
+        for(let i=0;i<foundCampus.student_details.length;i++){
+          if(foundCampus.student_details[i].BatchID === req.body.BatchID){
+            foundCampus.student_details.splice(i,1);
+            break;
+          }
+        }
+        foundCampus.save(error => {if(error){console.log(error);}});
+        res.send({"message":"Deleted Successfully"});
+      }else{
+        res.send({"message":"Campus not found"});
+      }
+    });
   }
 });
 //43rd API dummy
