@@ -182,31 +182,28 @@ app.post("/campus/simulation/savesimulation", bodyParser.json() ,function(req,re
     });
   }
 });
-//12th API dummy
+//12th API
 app.get("/campus/masterdata/campusbuildings", function (req, res) {
 	if (!req.session.sessionId) {
 		res.send("login first");
 	} else {
-    res.send(
-      [
-       {
-        'ID':1234,
-        'BuildingName':'Central Instrumentation Building',
-        'BuildingType':'Acadamic',
-        'NoOfFloors':3,
-        'NoOfWorkers':75,
-        'Status':'Enabled Or Disabled'
-       },
-       {
-        'ID':1234,
-        'BuildingName':'Central Instrumentation Building',
-        'BuildingType':'Adminstration',
-        'NoOfFloors':3,
-        'NoOfWorkers':75,
-        'Status':'Enabled Or Disabled'
-       }
-      ]
-     );
+    Campus.findOne({campusname:req.session.campusname},function(err,foundCampus){
+      if(!err && foundCampus){
+        let arr_Build = []
+        for(let i = 0;i<foundCampus.buildings.length;i++){
+          arr_Build.push({"Id":foundCampus.buildings[i].BuildingId,
+          "BuildingName":foundCampus.buildings[i].BuildingName,
+          "BuildingType":foundCampus.buildings[i].BuildingType,
+          "NoOfFloors":foundCampus.buildings[i].NoOfFloors,
+          "NumberOfWorkers":foundCampus.buildings[i].NumberOfWorkers,
+          "Status":"Enabled Or Disabled"}
+          );
+        }
+        res.send({"message":arr_Build});
+      }else{
+        res.send({"message":"campus not found."});
+      }
+    });
   }
 });
 //13th API dummy
