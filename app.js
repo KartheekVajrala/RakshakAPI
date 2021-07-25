@@ -206,59 +206,23 @@ app.get("/campus/masterdata/campusbuildings", function (req, res) {
     });
   }
 });
-//13th API dummy
+//13th API
 app.get("/campus/masterdata/campusbuildings/viewdata", function (req, res) {
 	if (!req.session.sessionId) {
 		res.send("login first");
 	} else {
-    res.send({
-      "BuildingId":13,
-      "BuildingName":"admin-east",
-      "BuildingType":["Academic","Administartion"],
-      "NoOfFloors":2,
-      "ActiveHours":["10.00am","6.30pm"],
-      "NumberOfWorkers":35,
-      "NumberOfRoomsineachfloor":3,
-      "co-ordinates":[[73.113726,26.47113],[73.11408900000001,26.47113],[73.114096,26.471033], [73.11405999999999,26.471033]],
-      "RoomDetails":
-      [
-       {
-        "FloorNo":1,
-        "NumberofRooms":2,
-        "Rooms":
-         [
-          {
-           "RoomName":"Room1",
-           "Capacity":20,
-           "RoomType":""
-          },
-          {
-           "RoomName":"Room2",
-           "Capacity":20,
-           "RoomType":""
+    Campus.findOne({campusname:req.session.campusname},function(err,foundCampus){
+      if(!err && foundCampus){
+        for(let i=0;i<foundCampus.buildings.length;i++){
+          if(foundCampus.buildings[i].BuildingId === req.body.BuildingId){
+            res.send(foundCampus.buildings[i])
+            break;
           }
-         ]
-       },
-       {
-        "FloorNo":2,
-        "NumberofRooms":2,
-        "Rooms":
-         [
-          {
-           "RoomName":"Room3",
-           "Capacity":20,
-           "RoomType":""
-          },
-          {
-           "RoomName":"Room4",
-           "Capacity":20,
-           "RoomType":""
-          }
-         ]
-       }
-      ]
-     
-     });
+        }
+      }else{
+        res.send({"message":"Campus not found"});
+      }
+    });
   }
 });
 //14th API dummy
