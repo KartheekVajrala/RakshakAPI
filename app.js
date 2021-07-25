@@ -487,9 +487,11 @@ app.get("/campus/masterdata/users", function (req, res) {
       else{
         let arr = []
         for(let i = 0;i<docs.length;i++){
-          arr.push({"username":docs[i].username,
+          arr.push({"ID":docs[i].ID,
+          "username":docs[i].username,
           "role":docs[i].role,
           "email":docs[i].email,
+          "ContactNo":docs[i].ContactNo,
           "Status":"Enabled Or Disabled"
           });
         }
