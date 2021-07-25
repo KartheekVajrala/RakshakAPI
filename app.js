@@ -40,7 +40,10 @@ const userSchema = new mongoose.Schema({
 const campusSchema = new mongoose.Schema({
   campusname : String,
   buildings : Array,
-  classes : Array
+  classes : Array,
+  student_details : Array,
+  faculty_details : Array,
+  staff_details : Array
 });
 
 const User = mongoose.model("User",userSchema);
@@ -465,26 +468,22 @@ app.get("/campus/masterdata/users", function (req, res) {
 	if (!req.session.sessionId) {
 		res.send("login first");
 	} else {
-    res.send(
-      [
-       {
-        "ID":12345,
-        "USername":"Adway",
-        "Role":"CampusAdmin",
-        "Email":"sampleemail@gmail.com",
-        "Contact":9876543210,
-        "Status":"Enable or Disable"
-       },
-       {
-        "ID":12346,
-        "USername":"suma",
-        "Role":"CampusDirector",
-        "Email":"sampleemail@gmail.com",
-        "Contact":9876543210,
-        "Status":"Enable or Disable"
-       }
-      ]
-     );
+    User.find({}, function (err, docs) {
+      if (err){
+          console.log(err);
+      }
+      else{
+        let arr = []
+        for(let i = 0;i<docs.length;i++){
+          arr.push({"username":docs[i].username,
+          "role":docs[i].role,
+          "email":docs[i].email,
+          "Status":"Enabled Or Disabled"
+          });
+        }
+        res.send({"message":arr});
+      }
+    });
   }
 });
 //29th API dummy
