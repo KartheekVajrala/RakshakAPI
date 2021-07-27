@@ -848,6 +848,67 @@ app.delete('/campus/masterdata/staffdetails/delete',function(req,res){
     });
   }
 });
+//50th API dummy
+app.get("/campus/campussimulator/visualpanel/buildingoccupancy", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send({
+      "HostelB1":Math.floor(Math.random() * 60) + 40,
+      "HostelG1":Math.floor(Math.random() * 40) + 30,
+      "Academic East": Math.floor(Math.random() * 5) + 15,
+      "Kendriya Bhandar": Math.floor(Math.random() * 15) + 20
+     });
+  }
+});
+//51st API dummy
+app.get("/campus/campussimulator/visualpanel/casestatisics", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send({
+      "Cumulative_infections":Math.floor(Math.random() * 20) + 40,
+      "Active_infections":Math.floor(Math.random() * 10) + 25,
+      "Daily_infections": Math.floor(Math.random() * 10) ,
+      "Cumulative_positive_cases": Math.floor(Math.random() * 10) + 30,
+      "Active_cases":Math.floor(Math.random() * 5) + 15,
+      "Daily_positive_cases": Math.floor(Math.random() * 7),
+      "Cumulative_symptomatic":Math.floor(Math.random() * 15) + 30,
+      "Recovered":Math.floor(Math.random() * 10) + 5,
+      "Died":Math.floor(Math.random() * 5)
+     });
+  }
+});
+//52nd API dummy
+app.get("/campus/campussimulator/visualpanel/peoplelocations", function (req, res) {
+	if (!req.session.sessionId) {
+		res.send("login first");
+	} else {
+    res.send(
+      {
+        "day" : 1,
+        "time":"00:00",
+        "locations":
+        [
+          {
+            "ID":15,
+            "X-coordinate":10.32,
+            "Y-coordinate":5.67,
+            "state": "Healthy",
+            "role":"student"
+          },
+          {
+            "ID":16,
+            "X-coordinate":8.23,
+            "Y-coordinate":9.10,
+            "state": "Asymptomatic",
+            "role":"faculty"
+          },
+        ]  
+      } 
+    );
+  }
+});
 app.listen(3000, function() {
   console.log("Server started on port 3000");
 });
