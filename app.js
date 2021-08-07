@@ -1008,15 +1008,15 @@ app.get("/campus/campussimulator/visualpanel/casestatisics", function (req, res)
 		res.send("login first");
 	} else {
     res.send({
-      "Cumulative_infections":Math.floor(Math.random() * 20) + 40,
-      "Active_infections":Math.floor(Math.random() * 10) + 25,
-      "Daily_infections": Math.floor(Math.random() * 10) ,
-      "Cumulative_positive_cases": Math.floor(Math.random() * 10) + 30,
-      "Active_cases":Math.floor(Math.random() * 5) + 15,
-      "Daily_positive_cases": Math.floor(Math.random() * 7),
-      "Cumulative_symptomatic":Math.floor(Math.random() * 15) + 30,
-      "Recovered":Math.floor(Math.random() * 10) + 5,
-      "Died":Math.floor(Math.random() * 5)
+      "Day 1":[Math.floor(Math.random() * 20) + 40,
+      Math.floor(Math.random() * 10) + 25,
+      Math.floor(Math.random() * 10) ,
+      Math.floor(Math.random() * 10) + 30,
+      Math.floor(Math.random() * 5) + 15,
+      Math.floor(Math.random() * 7),
+      Math.floor(Math.random() * 15) + 30,
+      Math.floor(Math.random() * 10) + 5,
+      Math.floor(Math.random() * 5)]
      });
   }
 });
